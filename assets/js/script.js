@@ -113,15 +113,16 @@ var display5Day = function(weather){
        forecastTempEl.textContent = "Temp: " + dailyForecast.main.temp + " °F";
        forecastEl.appendChild(forecastTempEl);
 
-    //    var forecastwindEl = document.createElement("span");
-    //    forecastwindEl.classList = "card-body text-center";
-    //    forecastwindEl.textContent = "Wind Speed: " + dailyForecast.wind + " MPH";
-    //    forecastwindEl.appendChild(forecastwindEl);
+       var forecastwindEl = document.createElement("span")
+       forecastwindEl.classList = "card-body text-center";
+       forecastwindEl.textContent = "Wind Speed: " + dailyForecast.wind.speed + " MPH";
+       forecastEl.appendChild(forecastwindEl);
 
        var forecastHumEl = document.createElement("span");
        forecastHumEl.classList = "card-body text-center";
        forecastHumEl.textContent = "Humidity: " + dailyForecast.main.humidity + "  %";
        forecastEl.appendChild(forecastHumEl);
+
        forecastContainerEl.appendChild(forecastEl);
     }
 }
