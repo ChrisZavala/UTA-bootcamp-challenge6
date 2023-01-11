@@ -16,7 +16,7 @@ var citySubmitSearch = function(event) {
     var city = cityInputEl.value.trim();
         if (city) {
             currentCityWeather(city);
-            getFiveDayForeCast(city);
+            display5Day(city);
             cities.unshift({city});
             cityInputEl.value = "";
         } else {
@@ -42,7 +42,7 @@ var currentCityWeather = function(city) {
         });
     });
 };
-
+https://api.openweathermap.org/data/2.5/forecast?q=[object%20Object]&units=imperial&appid=7d7c4de058f3c932d835b1c88eb5ec8c
 
 //this is going to be my function where I am getting my dt from api calls for city. 
 var showcurrentCityWeather = function(weather, searchCity) {
@@ -79,57 +79,65 @@ var showcurrentCityWeather = function(weather, searchCity) {
 }
 
 
-var getFiveDayForeCast = function(city){
+var get5Day = function(city){
     var apiKey = "7d7c4de058f3c932d835b1c88eb5ec8c"
     var apiURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${apiKey}`
 
     fetch(apiURL)
     .then(function(response){
         response.json().then(function(data){
-            getFiveDayForeCast(data);
+           display5Day(data);
         });
     });
 };
 
-var showfiveDayForeCast = function () {
-    forecastContainerEl.textContent = "";
+var display5Day = function(weather){
+    forecastContainerEl.textContent = ""
     forecastTitle.textContent = "5-Day Forecast:";
 
     var forecast = weather.list;
-
-        for (var i = 5; i < forecast.length; i = i+8) {
-        var dailyForecast = forecast[i];
+        for(var i=5; i < forecast.length; i++){
+       var dailyForecast = forecast[i];
         
-        var forecastEl = document.createElement("div");
-        forecastEl.classList = "card bg-primary text-light m-2";
-
-        var forecastDate = document.createElement("h5");
-        forecastDate.textContent = moment.unix(dailyForecast.dt).format("MMM D, YYYY");
-        forecastDate.classList = "card-header text-center";
-        forecastEl.appendChild.apply(forecastDate);
-
-        var weatherIcon = document.createElement("img")
-        weatherIcon.classList = "card-body text-center";
-        weatherIcon.setAttribute("src", `https://openweathermap.org/img/wn/${dailyForecast.weather[0].icon}@2x.png`);
-
-        var forecastTemperature = document.createElement("span");
-        forecastTemperature.classList = "card-body text-center";
-        forecastTemperature.textContent = dailyForecast.main.temp + " °F";
-        
-
-        // var foreCastWind = document.createElement("span");
-        // foreCastWind.classList = "card-body text-center";
-        // foreCastWind.textContent =   dailyForecast.main.wind.speed + " MPH"
        
+       var forecastEl=document.createElement("div");
+       forecastEl.classList = "card bg-primary text-light m-2";
 
-        var forecastHumidity = document.createElement("span");
-        forecastHumidity.classList = "card-body text-center";
-        forecastHumidity.textContent = dailyForecast.main.humidity + " %"
-        
-        forecastEl.appendChild(weatherIcon);
-        dailyForeCast.appendChild(forecastTemperature);
-        // dailyForeCast.appendChild(foreCastWind);
-        dailyForecast.appendChild(forecastHumidity);
+       //console.log(dailyForecast)
+
+       //create date element
+       var forecastDate = document.createElement("h5")
+       forecastDate.textContent= moment.unix(dailyForecast.dt).format("MMM D, YYYY");
+       forecastDate.classList = "card-header text-center"
+       forecastEl.appendChild(forecastDate);
+
+       
+       //create an image element
+       var weatherIcon = document.createElement("img")
+       weatherIcon.classList = "card-body text-center";
+       weatherIcon.setAttribute("src", `https://openweathermap.org/img/wn/${dailyForecast.weather[0].icon}@2x.png`);  
+
+       //append to forecast card
+       forecastEl.appendChild(weatherIcon);
+       
+       //create temperature span
+       var forecastTempEl=document.createElement("span");
+       forecastTempEl.classList = "card-body text-center";
+       forecastTempEl.textContent = dailyForecast.main.temp + " °F";
+
+        //append to forecast card
+        forecastEl.appendChild(forecastTempEl);
+
+       var forecastHumEl=document.createElement("span");
+       forecastHumEl.classList = "card-body text-center";
+       forecastHumEl.textContent = dailyForecast.main.humidity + "  %";
+
+       //append to forecast card
+       forecastEl.appendChild(forecastHumEl);
+
+        // console.log(forecastEl);
+       //append to five day container
+        forecastContainerEl.appendChild(forecastEl);
     }
 
 }
