@@ -5,3 +5,11 @@
 .bg-custom {
     background-color: #274C77;
 }
+
+
+.container-fluid {
+    background-color: lightgray;
+}
+body{
+    background-color: lightgray;
+}
